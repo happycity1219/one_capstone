@@ -33,15 +33,21 @@ class _ProfileScreenState extends State<MyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.grey[200],
       appBar: AppBar(
-        backgroundColor: Colors.grey[800],
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Text(
           '내 정보',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 22),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings, color: Colors.black ,size: 28),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -49,36 +55,64 @@ class _ProfileScreenState extends State<MyPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // 상단 아이콘 및 닉네임
-            Row(
-              children: [
-                Icon(Icons.person, color: Colors.black, size: 28),
-                SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    '닉네임',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
                   ),
-                ),
-              ],
+                ],
+              ),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.grey[400],
+                    child: Icon(Icons.person, color: Colors.black, size: 30),
+                  ),
+                  SizedBox(width: 20),
+                  Expanded(
+                    child: Text(
+                      '닉네임',
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.black),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            Divider(thickness: 1, color: Colors.black),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
 
             // 내정보 수정 및 알림 설정
             ListTile(
+              tileColor: Colors.white,
               leading: Icon(Icons.edit, color: Colors.black),
-              title: Text('내정보 수정'),
+              title: Text('내정보 수정', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyPageModify()), // 내 정보 수정 페이지로 이동
+                  MaterialPageRoute(builder: (context) => MyPageModify()),
                 );
               },
             ),
-            Divider(thickness: 1, color: Colors.grey), // 줄 추가
+            SizedBox(height: 10),
             ListTile(
+              tileColor: Colors.white,
               leading: Icon(Icons.notifications, color: Colors.black),
-              title: Text('알림 설정'),
+              title: Text('알림 설정', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+              trailing: Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 18),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               onTap: () {
                 Navigator.push(
                   context,
@@ -86,25 +120,24 @@ class _ProfileScreenState extends State<MyPage> {
                 );
               },
             ),
-            Divider(thickness: 1, color: Colors.grey), // 줄 추가
             SizedBox(height: 20),
 
             // 타임라인 및 지도
             Text(
               '타임라인',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Container(
               height: 300,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
-                    blurRadius: 5,
+                    color: Colors.grey.withOpacity(0.3),
+                    spreadRadius: 3,
+                    blurRadius: 7,
                     offset: Offset(0, 3),
                   ),
                 ],
@@ -130,9 +163,7 @@ class _ProfileScreenState extends State<MyPage> {
                 ],
               ),
             ),
-            Spacer(), // 남은 공간을 채우기 위해 Spacer 사용
-
-            // 로그아웃 버튼
+            Spacer(), // 로그아웃 버튼
             Align(
               alignment: Alignment.bottomRight,
               child: TextButton(
@@ -140,6 +171,7 @@ class _ProfileScreenState extends State<MyPage> {
                 child: Text(
                   'LOG OUT',
                   style: TextStyle(
+                    fontSize : 16,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,

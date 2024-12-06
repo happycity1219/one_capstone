@@ -4,19 +4,19 @@ class MyPageModify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300], // 배경색을 동일하게 설정
+      backgroundColor: Colors.grey[200], // 배경색을 통일성 있게 설정
       appBar: AppBar(
-        backgroundColor: Colors.grey[800], // 상단 배경색
-        elevation: 0, // 그림자 제거
+        backgroundColor: Colors.white, // 상단 배경색을 밝게 설정
+        elevation: 1, // 살짝 그림자 추가
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white), // 뒤로 가기 버튼
+          icon: Icon(Icons.arrow_back, color: Colors.black, size: 28), // 뒤로 가기 버튼
           onPressed: () {
             Navigator.pop(context); // 이전 화면으로 이동
           },
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.home, color: Colors.white), // 홈 버튼
+            icon: Icon(Icons.home, color: Colors.black, size: 28), // 홈 버튼
             onPressed: () {
               Navigator.popUntil(context, (route) => route.isFirst); // 홈 화면으로 이동
             },
@@ -24,25 +24,32 @@ class MyPageModify extends StatelessWidget {
         ],
         title: Text(
           '내 정보 수정', // 제목을 `내 정보 수정`으로 설정
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true, // 제목 중앙 정렬
       ),
       body: Container(
-        color: Colors.grey[300], // 전체 배경색
+        color: Colors.grey[200], // 전체 배경색
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20),
-            CircleAvatar(
-              radius: 50,
-              backgroundColor: Colors.grey[400],
-              child: Icon(Icons.image, size: 50, color: Colors.white),
+            Container(
+              width: 120, height: 120,
+              decoration: BoxDecoration(
+                color: Colors.grey[400],
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Icon(Icons.image, size: 50, color: Colors.white),
+              ),
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
             Text(
               "닉네임",
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
@@ -63,9 +70,10 @@ class MyPageModify extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      minimumSize: Size(double.infinity, 50),
+                      minimumSize: Size(double.infinity, 60),
                     ),
-                    child: Text("닉네임 변경"),
+                    child: Text("닉네임 변경", style: TextStyle(fontSize: 16,
+                        fontWeight: FontWeight.w500),),
                   ),
                   SizedBox(height: 20), // 버튼과 이메일 필드 간 간격 추가
                   TextField(
@@ -98,7 +106,7 @@ class MyPageModify extends StatelessWidget {
                       ),
                       minimumSize: Size(double.infinity, 50),
                     ),
-                    child: Text("비밀번호 변경"),
+                    child: Text("비밀번호 변경", style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
                   ),
                 ],
               ),

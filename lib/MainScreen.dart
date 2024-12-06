@@ -64,39 +64,48 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white, // 흰색 배경
-        elevation: 0, // 그림자 제거
-        automaticallyImplyLeading: false, // 기본 뒤로가기 버튼 제거
+        backgroundColor: Colors.white,
+        elevation: 2,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 90.0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-              icon: Icon(Icons.home, color: Colors.grey[800]),
+              icon: Icon(Icons.home, color: Colors.black, size: 34.0),
               onPressed: () {},
             ),
             Expanded(
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 8.0),
+                margin: EdgeInsets.symmetric(horizontal: 2.0),
                 decoration: BoxDecoration(
-                  color: Colors.grey[200],
+                  color: Colors.grey[100],
                   borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 2),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Icon(Icons.search, color: Colors.grey[600]),
+                      child: Icon(Icons.search, color: Colors.grey[500], size: 24.0),
                     ),
                     Expanded(
                       child: TextField(
                         decoration: InputDecoration(
-                          hintText: '목적지를 입력해주세요!',
-                          hintStyle: TextStyle(color: Colors.grey[600]),
+                          hintText: '목적지를 입력하세요..',
+                          hintStyle: TextStyle(color: Colors.grey[500], fontSize: 16.0),
                           border: InputBorder.none,
                         ),
-                        style: TextStyle(color: Colors.black87),
+                        style: TextStyle(color: Colors.black, fontSize: 16.0),
                       ),
                     ),
                   ],
@@ -104,11 +113,11 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
             IconButton(
-              icon: Icon(Icons.account_circle, color: Colors.grey[800]),
+              icon: Icon(Icons.account_circle, color: Colors.black, size:34.0),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyPage()), // MyPage로 이동
+                  MaterialPageRoute(builder: (context) => MyPage()),
                 );
               },
             ),
@@ -124,43 +133,44 @@ class _MainScreenState extends State<MainScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(height: 10),
-                    Text(
-                      '현재, 여기여요!',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          '현재 위치',
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 10),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => MAP_page()), // MAPPage로 이동
+                          MaterialPageRoute(builder: (context) => MAP_page()),
                         );
                       },
                       child: Container(
-                        height: 300,
+                        height: 280,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(16.0),
+                          border: Border.all(color: Colors.grey[400]!, width: 1), // 연한 회색 테두리 추가, 두께를 줄임
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 3,
+                              blurRadius: 6,
                               offset: Offset(0, 3),
                             ),
                           ],
                         ),
-                        child: _currentLatLng == null
-                            ? Center(child: CircularProgressIndicator())
-                            : GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => MAP_page()),
-                            );
-                          },
-                          child: GoogleMap(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(16.0), // 지도 모서리를 둥글게 설정
+                          child: _currentLatLng == null
+                              ? Center(child: CircularProgressIndicator())
+                              : GoogleMap(
                             initialCameraPosition: CameraPosition(
                               target: _currentLatLng!,
                               zoom: 16,
@@ -186,13 +196,13 @@ class _MainScreenState extends State<MainScreen> {
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(16.0),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 4,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -201,14 +211,28 @@ class _MainScreenState extends State<MainScreen> {
                         children: [
                           Text(
                             '버스 정보',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           SizedBox(height: 10),
-                          Text('명지전문대, 충암중고등학교 - 7018, 7017, 7021',
-                              style: TextStyle(fontSize: 16)),
-                          SizedBox(height: 5),
-                          Text('명지전문대, 충암중고등학교 - 7734, 7021, 7018',
-                              style: TextStyle(fontSize: 16)),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('명지전문대, 충암중고등학교   ㅡ', style: TextStyle(fontSize: 16, color: Colors.black87)),
+                                  Text('7018, 7017, 7021', style: TextStyle(fontSize: 16, color: Colors.blue)),
+                                ],
+                              ),
+                              SizedBox(height: 5),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text('명지전문대, 충암중고등학교   ㅡ', style: TextStyle(fontSize: 16, color: Colors.black87)),
+                                  Text('7734, 7021, 7018', style: TextStyle(fontSize: 16, color: Colors.blue)),
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -217,20 +241,20 @@ class _MainScreenState extends State<MainScreen> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => StationSearchScreen()), // StationSearchScreen으로 이동
+                          MaterialPageRoute(builder: (context) => StationSearchScreen()),
                         );
                       },
                       child: Container(
                         padding: EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(16.0),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.grey.withOpacity(0.5),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 3),
+                              color: Colors.grey.withOpacity(0.3),
+                              spreadRadius: 4,
+                              blurRadius: 8,
+                              offset: Offset(0, 4),
                             ),
                           ],
                         ),
@@ -238,13 +262,15 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              '정류장 검색!',
-                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                              '정류장 검색',
+                              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                             ),
                             SizedBox(height: 10),
+                            Icon(Icons.directions_bus, size: 48.0, color: Colors.blue),
+                            SizedBox(height: 10),
                             Text(
-                              '정류장을 검색하려면 클릭하세요!',
-                              style: TextStyle(fontSize: 16),
+                              '정류장을 검색하려면 클릭하세요',
+                              style: TextStyle(fontSize: 16, color: Colors.black87),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -256,13 +282,13 @@ class _MainScreenState extends State<MainScreen> {
                       padding: EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(16.0),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: Offset(0, 3),
+                            color: Colors.grey.withOpacity(0.3),
+                            spreadRadius: 4,
+                            blurRadius: 8,
+                            offset: Offset(0, 4),
                           ),
                         ],
                       ),
@@ -270,11 +296,23 @@ class _MainScreenState extends State<MainScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '최근, 방문했어요!',
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            '최근 방문',
+                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                           ),
                           SizedBox(height: 10),
-                          Text('최근 방문지역 없음..', style: TextStyle(fontSize: 16)),
+                          Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Icon(Icons.place, color: Colors.blue, size: 24.0),
+                                  Expanded(
+                                    child: Text('최근 방문지역 없음...', style: TextStyle(fontSize: 16, color: Colors.black87)),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
