@@ -81,42 +81,46 @@ class _RouteFindingScreenState extends State<MAP_page> {
             left: 16,
             right: 16,
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
+                borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
-                    spreadRadius: 2,
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 1,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: Offset(0, 2),
                   ),
                 ],
               ),
               child: Row(
                 children: [
-                  Icon(Icons.menu, color: Colors.black),
+                  Icon(Icons.menu, color: Colors.black54),
                   SizedBox(width: 8.0),
                   Expanded(
                     child: GestureDetector(
                       onTap: () {
-                        // 검색 페이지 이동 구현
+                        // 검색 페이지 이동
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => SearchPage()),
                         );
                       },
-                      child: TextField(
-                        enabled: false, // 직접 입력 불가, 클릭 시 검색 페이지 이동
-                        decoration: InputDecoration(
-                          hintText: '장소, 버스, 지하철, 주소 검색',
-                          border: InputBorder.none,
+                      child: AbsorbPointer(
+                        absorbing: true,
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: '장소, 버스, 지하철, 주소 검색',
+                            hintStyle: TextStyle(color: Colors.grey[500]),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                  Icon(Icons.search, color: Colors.black),
+                  SizedBox(width: 8.0),
+                  Icon(Icons.search, color: Colors.black54),
                 ],
               ),
             ),
@@ -127,15 +131,16 @@ class _RouteFindingScreenState extends State<MAP_page> {
             child: ElevatedButton.icon(
               onPressed: () {},
               icon: Icon(Icons.star_border),
-              label: Text('즐겨찾기'),
+              label: Text('즐겨찾기', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
-                foregroundColor: Colors.black,
-                shadowColor: Colors.grey.withOpacity(0.5),
+                foregroundColor: Colors.black87,
+                shadowColor: Colors.grey.withOpacity(0.3),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                elevation: 3,
+                elevation: 2,
+                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               ),
             ),
           ),
@@ -144,8 +149,9 @@ class _RouteFindingScreenState extends State<MAP_page> {
             left: 12,
             child: FloatingActionButton(
               backgroundColor: Colors.white,
+              elevation: 2,
               onPressed: getCurrentLocation,
-              child: Icon(Icons.my_location),
+              child: Icon(Icons.my_location, color: Colors.black87),
             ),
           ),
         ],
