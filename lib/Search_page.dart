@@ -11,7 +11,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateMixin {
   final TextEditingController startController = TextEditingController();
   final TextEditingController destinationController = TextEditingController();
-  final String googleApiKey = 'AIzaSyCDtwnXGep0Dz_WLt8gn9WDOLKlQQGp5y8'; // 실제 API 키로 교체하세요
+  final String googleApiKey = 'AIzaSyCDtwnXGep0Dz_WLt8gn9WDOLKlQQGp5y8';
   late TabController _tabController;
 
   bool showStartSuggestions = false;
@@ -73,25 +73,69 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
     });
   }
 
+  Widget buildSuggestionList(List<String> suggestions, bool isStart) {
+    return Material(
+      elevation: 4,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: ListView.builder(
+          padding: EdgeInsets.symmetric(vertical: 4),
+          shrinkWrap: true,
+          itemCount: suggestions.length,
+          itemBuilder: (context, index) {
+            return InkWell(
+              onTap: () {
+                setState(() {
+                  if (isStart) {
+                    startController.text = suggestions[index];
+                    showStartSuggestions = false;
+                  } else {
+                    destinationController.text = suggestions[index];
+                    showDestinationSuggestions = false;
+                  }
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: ListTile(
+                  leading: Icon(Icons.search, color: Colors.grey[700], size: 20),
+                  title: Text(
+                    suggestions[index],
+                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                  ),
+                  dense: true,
+                  visualDensity: VisualDensity.compact,
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
+        backgroundColor: Colors.grey[800],
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
-        title: Text(
-          '검색',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text('검색', style: TextStyle(color: Colors.white)),
+        centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(Icons.search, color: Colors.black),
+            icon: Icon(Icons.search, color: Colors.white),
             onPressed: () {
               if (startController.text.isNotEmpty &&
                   destinationController.text.isNotEmpty) {
@@ -125,19 +169,29 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
+                      // 출발지 입력 필드
                       Row(
                         children: [
                           Expanded(
                             child: Container(
-                              height: 50,
+                              height: 48,
                               decoration: BoxDecoration(
-                                color: Colors.grey[300],
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: TextField(
                                 controller: startController,
                                 decoration: InputDecoration(
                                   hintText: '출발지 입력',
+                                  hintStyle: TextStyle(color: Colors.grey[500]),
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.symmetric(
                                     vertical: 12,
@@ -154,23 +208,33 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                             ),
                           ),
                           SizedBox(width: 12),
-                          Icon(Icons.swap_vert, color: Colors.black),
+                          Icon(Icons.swap_vert, color: Colors.black87),
                         ],
                       ),
                       SizedBox(height: 15),
+                      // 도착지 입력 필드
                       Row(
                         children: [
                           Expanded(
                             child: Container(
-                              height: 50,
+                              height: 48,
                               decoration: BoxDecoration(
-                                color: Colors.grey[300],
+                                color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    spreadRadius: 1,
+                                    blurRadius: 5,
+                                    offset: Offset(0, 2),
+                                  ),
+                                ],
                               ),
                               child: TextField(
                                 controller: destinationController,
                                 decoration: InputDecoration(
                                   hintText: '도착지 입력',
+                                  hintStyle: TextStyle(color: Colors.grey[500]),
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.symmetric(
                                     vertical: 12,
@@ -187,12 +251,13 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                             ),
                           ),
                           SizedBox(width: 12),
-                          Icon(Icons.menu, color: Colors.black),
+                          Icon(Icons.menu, color: Colors.black87),
                         ],
                       ),
                     ],
                   ),
                 ),
+                // 탭바
                 TabBar(
                   controller: _tabController,
                   labelColor: Colors.black,
@@ -218,53 +283,21 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
                 ),
               ],
             ),
+            // 출발지 추천
             if (showStartSuggestions && startSuggestions.isNotEmpty)
               Positioned(
                 top: 110,
                 left: 16,
                 right: 16,
-                child: Material(
-                  elevation: 4,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: startSuggestions.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(startSuggestions[index]),
-                        onTap: () {
-                          setState(() {
-                            startController.text = startSuggestions[index];
-                            showStartSuggestions = false;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ),
+                child: buildSuggestionList(startSuggestions, true),
               ),
+            // 도착지 추천
             if (showDestinationSuggestions && destinationSuggestions.isNotEmpty)
               Positioned(
                 top: 200,
                 left: 16,
                 right: 16,
-                child: Material(
-                  elevation: 4,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: destinationSuggestions.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(destinationSuggestions[index]),
-                        onTap: () {
-                          setState(() {
-                            destinationController.text = destinationSuggestions[index];
-                            showDestinationSuggestions = false;
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ),
+                child: buildSuggestionList(destinationSuggestions, false),
               ),
           ],
         ),
